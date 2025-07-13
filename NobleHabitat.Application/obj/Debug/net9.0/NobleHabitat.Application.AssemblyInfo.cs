@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NobleHabitat.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6ad549a163b883ae79f31dc3821ba5daadcd426")]
 [assembly: System.Reflection.AssemblyProductAttribute("NobleHabitat.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NobleHabitat.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="DependencyInjection\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NobleHabitat.Application\NobleHabitat.Application.csproj" />
+    <ProjectReference Include="..\NobleHabitat.Domain\NobleHabitat.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

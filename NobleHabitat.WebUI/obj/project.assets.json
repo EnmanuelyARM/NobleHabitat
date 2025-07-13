@@ -432,6 +432,40 @@
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
         }
+      },
+      "NobleHabitat.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "NobleHabitat.Domain": "1.0.0",
+          "NobleHabitat.Shared": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/NobleHabitat.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Application.dll": {}
+        }
+      },
+      "NobleHabitat.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/NobleHabitat.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Domain.dll": {}
+        }
+      },
+      "NobleHabitat.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/NobleHabitat.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Shared.dll": {}
+        }
       }
     },
     "net9.0/browser-wasm": {
@@ -864,6 +898,40 @@
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets": {}
+        }
+      },
+      "NobleHabitat.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "NobleHabitat.Domain": "1.0.0",
+          "NobleHabitat.Shared": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/NobleHabitat.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Application.dll": {}
+        }
+      },
+      "NobleHabitat.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/NobleHabitat.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Domain.dll": {}
+        }
+      },
+      "NobleHabitat.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/NobleHabitat.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NobleHabitat.Shared.dll": {}
         }
       }
     }
@@ -1746,6 +1814,21 @@
         "tools/net9.0/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
         "tools/net9.0/Microsoft.NET.WebAssembly.Webcil.dll"
       ]
+    },
+    "NobleHabitat.Application/1.0.0": {
+      "type": "project",
+      "path": "../NobleHabitat.Application/NobleHabitat.Application.csproj",
+      "msbuildProject": "../NobleHabitat.Application/NobleHabitat.Application.csproj"
+    },
+    "NobleHabitat.Domain/1.0.0": {
+      "type": "project",
+      "path": "../NobleHabitat.Domain/NobleHabitat.Domain.csproj",
+      "msbuildProject": "../NobleHabitat.Domain/NobleHabitat.Domain.csproj"
+    },
+    "NobleHabitat.Shared/1.0.0": {
+      "type": "project",
+      "path": "../NobleHabitat.Shared/NobleHabitat.Shared.csproj",
+      "msbuildProject": "../NobleHabitat.Shared/NobleHabitat.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1753,7 +1836,8 @@
       "Microsoft.AspNetCore.Components.WebAssembly >= 9.0.7",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 9.0.7",
       "Microsoft.NET.ILLink.Tasks >= 9.0.7",
-      "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.7"
+      "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.7",
+      "NobleHabitat.Application >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1787,7 +1871,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\enman\\source\\repos\\NobleHabitat\\NobleHabitat.Application\\NobleHabitat.Application.csproj": {
+              "projectPath": "C:\\Users\\enman\\source\\repos\\NobleHabitat\\NobleHabitat.Application\\NobleHabitat.Application.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

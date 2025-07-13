@@ -3,9 +3,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.Domain", "NobleHabitat.Domain\NobleHabitat.Domain.csproj", "{7F23BEDD-F7C8-4787-AE69-A3B8737A8624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.Infraestructure", "NobleHabitat.Infraestructure\NobleHabitat.Infraestructure.csproj", "{C3C147F9-C12C-4FD3-BDD9-B920B75A9D62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.Shared", "NobleHabitat.Shared\NobleHabitat.Shared.csproj", "{D850427E-7A2D-466B-9464-62E117926A7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.Application", "NobleHabitat.Application\NobleHabitat.Application.csproj", "{EA4A1E84-7329-4FEC-88D4-79A2EC336149}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.API", "NobleHabitat.API\NobleHabitat.API.csproj", "{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NobleHabitat.WebUI", "NobleHabitat.WebUI\NobleHabitat.WebUI.csproj", "{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F23BEDD-F7C8-4787-AE69-A3B8737A8624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F23BEDD-F7C8-4787-AE69-A3B8737A8624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F23BEDD-F7C8-4787-AE69-A3B8737A8624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F23BEDD-F7C8-4787-AE69-A3B8737A8624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3C147F9-C12C-4FD3-BDD9-B920B75A9D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3C147F9-C12C-4FD3-BDD9-B920B75A9D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3C147F9-C12C-4FD3-BDD9-B920B75A9D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3C147F9-C12C-4FD3-BDD9-B920B75A9D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D850427E-7A2D-466B-9464-62E117926A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D850427E-7A2D-466B-9464-62E117926A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D850427E-7A2D-466B-9464-62E117926A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D850427E-7A2D-466B-9464-62E117926A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA4A1E84-7329-4FEC-88D4-79A2EC336149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA4A1E84-7329-4FEC-88D4-79A2EC336149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA4A1E84-7329-4FEC-88D4-79A2EC336149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA4A1E84-7329-4FEC-88D4-79A2EC336149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{736B1D2D-7F30-4EEB-B298-E6198AF9D7DA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C1A48B09-10D6-4E2D-A28B-6D1FAC15C15B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8CC1B4B4-88C0-48C8-B9E8-26D7CBCD5E16}
