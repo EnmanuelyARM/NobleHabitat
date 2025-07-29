@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace NobleHabitat.Domain.Interfaces
 {
-    public interface IOfertaRepository
+    public interface IOfertaRepository : IRepository<Oferta>
     {
         Task<Oferta?> GetByInmuebleIdAsync(Guid inmuebleId);
-        Task AddAsync(Oferta oferta);
-        Task UpdateAsync(Oferta oferta);
+        
     }
 
 }

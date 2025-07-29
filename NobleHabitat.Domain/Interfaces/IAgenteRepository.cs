@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace NobleHabitat.Domain.Interfaces
 {
-    public interface IPropietarioRepository : IRepository<Propietario>
+    public interface IAgenteRepository : IRepository<Agente>
     {
-        
+        Task<Agente?> GetByUsuarioIdAsync(Guid UsuarioId);
     }
 
 }

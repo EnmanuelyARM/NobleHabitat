@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace NobleHabitat.Domain.Interfaces
 {
-    public interface IEstanciaRepository
+    public interface IEstanciaRepository : IRepository<Estancia>
     {
         Task<IEnumerable<Estancia>> GetByInmuebleIdAsync(Guid inmuebleId);
-        Task AddAsync(Estancia estancia);
-        Task DeleteAsync(Guid id);
+       
     }
 
 }

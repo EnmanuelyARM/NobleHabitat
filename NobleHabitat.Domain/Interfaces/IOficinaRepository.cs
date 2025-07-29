@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace NobleHabitat.Domain.Interfaces
 {
-    public interface IOficinaRepository
+    public interface IOficinaRepository : IRepository<Oficina>
     {
-        Task<Oficina?> GetByIdAsync(Guid id);
-        Task<IEnumerable<Oficina>> GetAllAsync();
+        
     }
 
 }
