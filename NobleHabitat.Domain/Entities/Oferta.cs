@@ -2,7 +2,7 @@
 {
     public class Oferta
     {
-        InmuebleId { get; set; }
+        public Guid InmuebleId { get; set; }
         public Inmueble Inmueble { get; set; } = default!;
 
         public bool EnVenta { get; set; }
