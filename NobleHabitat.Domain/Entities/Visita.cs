@@ -12,5 +12,7 @@
 
         public DateTime FechaHora { get; set; }
         public string? Comentario { get; set; }
+        public object? Propietario { get; set; }
+        public object? Oficina { get; set; }
     }
 }

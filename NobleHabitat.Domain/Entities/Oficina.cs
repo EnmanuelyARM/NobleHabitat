@@ -9,6 +9,8 @@
 
         public ICollection<Inmueble> Inmuebles { get; set; } = new List<Inmueble>();
         public required object Agentes { get; set; }
+        //public object? Usuario { get; set; }
+        //public object Oficina { get; set; }
     }
-}
+
 }

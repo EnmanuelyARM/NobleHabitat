@@ -3,17 +3,18 @@ namespace NobleHabitat.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IAgenteRepository AgenteRepository { get; }
-        IOficinaRepository OficinaRepository { get; }
-        IPropietarioRepository PropietarioRepository { get; }
-        IZonaRepository ZonaRepository { get; }
-        ICaracteristicaInmuebleRepository CaracteristicaInmuebleRepository { get; }
-        IInmuebleRepository InmuebleRepository { get; }
-        IUsuarioRepository UsuarioRepository { get; }
-        IOfertaRepository OfertaRepository { get; }
-        IVisitaRepository VisitaRepository { get; }
-        IClienteRepository ClienteRepository { get; }
-        IEstanciaRepository EstanciaRepository { get; }
+        IAgenteRepository Agentes { get; }
+        IClienteRepository Clientes { get; }
+        IPropietarioRepository Propietarios { get; }
+        IUsuarioRepository Usuarios { get; }
+        IInmuebleRepository Inmuebles { get; }
+        IOficinaRepository Oficinas { get; }
+        IZonaRepository Zonas { get; }
+        ICaracteristicaInmuebleRepository CaracteristicaInmuebles { get; }
+        IEstanciaRepository Estancias { get; }
+        IVisitaRepository Visitas { get; }
+        IOfertaRepository Ofertas { get; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

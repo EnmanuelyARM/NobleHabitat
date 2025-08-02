@@ -91,13 +91,19 @@ namespace NobleHabitat.Infraestructure.Data
 
             modelBuilder.Entity<Oferta>()
                 .HasKey(o => o.InmuebleId);
-            
+            modelBuilder.Entity<Oferta>()
+                .HasOne(o => o.Inmueble)
+                .WithOne(i => i.Oferta)
+                .HasForeignKey<Oferta>(o => o.InmuebleId);
+
+
             modelBuilder.Entity<Oficina>()
                 .HasKey(o => o.Id);
-            modelBuilder.Entity<Oficina>()
-                .HasMany(o => o.Agentes)
-                .WithOne(a => a.Oficina)
-                .HasForeignKey(a => a.OficinaId);
+            //modelBuilder.Entity<Oficina>()
+            //    .HasOne(o => o.Zona)
+            //    .WithMany(z => z.Oficinas)
+            //    .HasForeignKey(o => o.ZonaId);
+
 
             modelBuilder.Entity<Zona>()
                 .HasKey(z => z.Id);
