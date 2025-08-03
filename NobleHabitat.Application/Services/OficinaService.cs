@@ -6,11 +6,11 @@ using Mapster;
 
 namespace NobleHabitat.Application.Services
 {
-    public class OficinaServices : IOficinaService
+    public class OficinaService : IOficinaService
     {
         private readonly IOficinaRepository _oficinaRepository;
 
-        public OficinaServices(IOficinaRepository oficinaRepository)
+        public OficinaService(IOficinaRepository oficinaRepository)
         {
             _oficinaRepository = oficinaRepository ?? throw new ArgumentNullException(nameof(oficinaRepository));
         }
