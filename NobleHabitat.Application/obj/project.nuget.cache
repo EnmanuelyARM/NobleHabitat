@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "FFtCgMCGPiQ=",
+  "dgSpecHash": "7/DYUyOPGOY=",
   "success": true,
   "projectFilePath": "C:\\Users\\enman\\source\\repos\\NobleHabitat\\NobleHabitat.Application\\NobleHabitat.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\enman\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\enman\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512"
+  ],
   "logs": []
 }

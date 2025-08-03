@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NobleHabitat.Infraestructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+782900e5bfc8580af20e92ceb24abe90165d1391")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54cec862efda38abdcb4c112e746688ae654b039")]
 [assembly: System.Reflection.AssemblyProductAttribute("NobleHabitat.Infraestructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NobleHabitat.Infraestructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

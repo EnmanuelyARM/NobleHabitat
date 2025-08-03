@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "ulBEFyaGwb4=",
+  "dgSpecHash": "unyA9oaQdkI=",
   "success": true,
   "projectFilePath": "C:\\Users\\enman\\source\\repos\\NobleHabitat\\NobleHabitat.WebUI\\NobleHabitat.WebUI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\enman\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\enman\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
     "C:\\Users\\enman\\.nuget\\packages\\microsoft.aspnetcore.authorization\\9.0.7\\microsoft.aspnetcore.authorization.9.0.7.nupkg.sha512",
     "C:\\Users\\enman\\.nuget\\packages\\microsoft.aspnetcore.components\\9.0.7\\microsoft.aspnetcore.components.9.0.7.nupkg.sha512",
     "C:\\Users\\enman\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\9.0.7\\microsoft.aspnetcore.components.analyzers.9.0.7.nupkg.sha512",
