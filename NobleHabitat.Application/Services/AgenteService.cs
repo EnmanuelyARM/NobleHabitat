@@ -70,16 +70,16 @@ namespace NobleHabitat.Application.Services
             return await Task.FromResult(agentes.Adapt<List<AgenteDto>>());
         }
 
-        public async Task DeleteAgentAsync(Guid id)
+        public async Task DeleteAgentAsync(Guid usuarioId)
         {
-            var agente = await _agenteRepository.GetByIdAsync(id);
+            var agente = await _agenteRepository.GetByIdAsync(usuarioId);
             if (agente != null)
             {
-                await _agenteRepository.DeleteAsync(id);
+                await _agenteRepository.DeleteAsync(usuarioId);
             }
             else
             {
-                throw new KeyNotFoundException($"Agent with ID {id} not found.");
+                throw new KeyNotFoundException($"Agent with ID {usuarioId} not found.");
             }
 
         }
