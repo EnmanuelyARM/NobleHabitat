@@ -23,19 +23,18 @@ namespace NobleHabitat.Application.DependencyInjection
             services.AddScoped<IOfertaService, OfertaService>();
             return services;
         }
-        
+
         //public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         //{
         //    // Register infrastructure services here
         //    // Example: services.AddSingleton<IMyRepository, MyRepository>();
         //    return services;
         //}
-        
+
         //public static IServiceCollection AddDomainServices(this IServiceCollection services)
         //{
         //    // Register domain services here
         //    // Example: services.AddScoped<IMyDomainService, MyDomainService>();
         //    return services;
-        }
     }
 }

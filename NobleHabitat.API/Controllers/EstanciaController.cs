@@ -81,27 +81,24 @@ namespace NobleHabitat.API.Controllers
 
         }
 
-        // Metodo para eliminar una estancia
         [HttpDelete("estancia/{id}")]
-        public async Task<ActionResult<EstanciaDto>> DeleteEstancia(int id)
+        public async Task<IActionResult> DeleteEstancia(Guid id)
         {
             try
             {
-                var deletedEstancia = await _estanciaService.DeleteEstanciaAsync(id);
-                if (deletedEstancia != null)
-                {
-                    return Ok(deletedEstancia);
-                }
-                else
-                {
-                    return NotFound($"Estancia with ID {id} not found.");
-                }
+                await _estanciaService.DeleteEstanciaAsync(id);
+                return NoContent(); // 204 No Content es una convención común para delete
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Estancia with ID {id} not found.");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
         }
+
+
     }
 }

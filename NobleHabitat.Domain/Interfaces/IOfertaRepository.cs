@@ -4,8 +4,6 @@ namespace NobleHabitat.Domain.Interfaces
 {
     public interface IOfertaRepository : IRepository<Oferta>
     {
-        Task<Oferta?> GetByInmuebleIdAsync(Guid inmuebleId);
-        
+        Task<IEnumerable<Oferta>> GetByInmuebleIdAsync(Guid inmuebleId);
     }
-
 }

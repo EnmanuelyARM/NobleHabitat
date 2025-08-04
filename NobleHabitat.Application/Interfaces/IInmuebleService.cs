@@ -1,4 +1,4 @@
-﻿using NobleHabitat.Shared.DTOs
+﻿using NobleHabitat.Shared.DTOs;
 
 namespace NobleHabitat.Application.Interfaces
 {

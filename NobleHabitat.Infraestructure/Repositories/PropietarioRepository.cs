@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NobleHabitat.Infraestructure.Repositories
 {
-    public class PropietarioRepository: Repository<Propietario>, IPropietarioRepository
+    public class PropietarioRepository : Repository<Propietario>, IPropietarioRepository
     {
         public PropietarioRepository(AppDBContext dbContext) : base(dbContext)
         {
@@ -14,7 +14,7 @@ namespace NobleHabitat.Infraestructure.Repositories
         {
             return await _dbContext.propietarios
                 .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(p => p.Id == id) 
+                .FirstOrDefaultAsync(p => p.Id == id)
                 ?? throw new KeyNotFoundException($"Propietario with id {id} not found.");
         }
         public async Task<IEnumerable<Propietario>> GetAllWithUsuariosAsync()
@@ -23,7 +23,5 @@ namespace NobleHabitat.Infraestructure.Repositories
                 .Include(p => p.Usuario)
                 .ToListAsync();
         }
-    }
-    {
     }
 }
