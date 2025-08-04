@@ -29,7 +29,5 @@ namespace NobleHabitat.Infraestructure.Repositories
                 .Where(o => o.InmuebleId == inmuebleId)
                 .ToListAsync();
         }
-        
-    
     }
 }

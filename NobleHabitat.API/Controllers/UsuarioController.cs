@@ -72,7 +72,7 @@ namespace NobleHabitat.API.Controllers
 
         // Metodo para actualizar un usuario
         [HttpPut("usuario/{Id}")]
-        public async Task<ActionResult<UsuarioDto>> UpdateUsuario([FromBody] UsuarioDto usuarioDto)
+        public async Task<ActionResult<UsuarioDto>> UpdateUsuario(Guid Id, [FromBody] UsuarioDto usuarioDto)
         {
             try
             {
@@ -97,8 +97,8 @@ namespace NobleHabitat.API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
         }
+
 
         // Metodo para eliminar un usuario
         [HttpDelete("usuario/{id}")]

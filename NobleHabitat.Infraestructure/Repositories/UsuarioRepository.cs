@@ -24,6 +24,4 @@ namespace NobleHabitat.Infraestructure.Repositories
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
     }
-    {
-    }
 }

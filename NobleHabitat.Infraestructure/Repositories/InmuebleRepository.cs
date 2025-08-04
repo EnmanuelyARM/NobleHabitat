@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NobleHabitat.Infraestructure.Repositories
 {
-    public class InmuebleRepository: Repository<Inmueble>, IInmuebleRepository
+    public class InmuebleRepository : Repository<Inmueble>, IInmuebleRepository
     {
         public InmuebleRepository(AppDBContext dbContext) : base(dbContext)
         {
@@ -20,7 +20,7 @@ namespace NobleHabitat.Infraestructure.Repositories
         {
             return await _dbContext.inmuebles
                 .Include(i => i.Caracteristicas)
-                .FirstOrDefaultAsync(i => i.Id == id) 
+                .FirstOrDefaultAsync(i => i.Id == id)
                 ?? throw new KeyNotFoundException($"Inmueble with id {id} not found.");
         }
 
@@ -38,7 +38,5 @@ namespace NobleHabitat.Infraestructure.Repositories
                 .Where(i => i.ZonaId == zonaId)
                 .ToListAsync();
         }
-    }
-    {
     }
 }

@@ -6,7 +6,7 @@ using Mapster;
 
 namespace NobleHabitat.Application.Services
 {
-    public class PropietarioService: IPropietarioService
+    public class PropietarioService : IPropietarioService
     {
         private readonly IPropietarioRepository _propietarioRepository;
         public PropietarioService(IPropietarioRepository propietarioRepository)
@@ -63,6 +63,5 @@ namespace NobleHabitat.Application.Services
             }
         }
     }
-    {
-    }
+
 }
