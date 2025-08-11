@@ -8,7 +8,8 @@
         public string Direccion { get; set; } = default!;
 
         public ICollection<Inmueble> Inmuebles { get; set; } = new List<Inmueble>();
-        public required object Agentes { get; set; }
+        public ICollection<Agente> Agentes { get; set; } = new List<Agente>();
+
         //public object? Usuario { get; set; }
         //public object Oficina { get; set; }
     }

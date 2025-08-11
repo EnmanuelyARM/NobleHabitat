@@ -12,7 +12,10 @@
 
         public DateTime FechaHora { get; set; }
         public string? Comentario { get; set; }
-        public object? Propietario { get; set; }
-        public object? Oficina { get; set; }
+        public Propietario Propietario { get; set; } = default!;
+        public Oficina Oficina { get; set; } = default!;
+        public Agente Agente { get; set; } = default!;
+        public Guid AgenteId { get; set; }
+
     }
 }

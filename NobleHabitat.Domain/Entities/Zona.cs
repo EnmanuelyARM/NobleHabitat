@@ -6,6 +6,6 @@
         public string Nombre { get; set; } = default!;
 
         public ICollection<Inmueble> Inmuebles { get; set; } = new List<Inmueble>();
-        public object? Oficina { get; set; }
+        public Oficina Oficina { get; set; } = default!;
     }
 }
