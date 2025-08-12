@@ -20,6 +20,8 @@ namespace NobleHabitat.API.Controllers
         {
             try
             {
+                //logger.loginformation("Entró al método GetUsuario");
+
                 var usuarios = await _usuarioService.GetUsuariosAsync();
                 return Ok(usuarios);
             }

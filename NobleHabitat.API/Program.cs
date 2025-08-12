@@ -1,4 +1,5 @@
 using NobleHabitat.Infraestructure.DependencyInjection;
+using NobleHabitat.Application.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddInfraestructure(builder.Configuration);
+
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
