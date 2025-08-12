@@ -1,0 +1,213 @@
+﻿@page "/"
+@inject HttpClient Http
+@using NobleHabitat.Shared.DTOs
+@using System.Text.Json
+
+<PageTitle>Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+
+@if (isLoading)
+{
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p>Cargando dashboard...</p>
+    </div>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        <h4>❌ Error al cargar el dashboard</h4>
+        <p><strong>Mensaje:</strong> @errorMessage</p>
+        <details>
+            <summary>Detalles técnicos</summary>
+            <pre>@debugInfo</pre>
+        </details>
+        <button class="btn btn-primary mt-2" @onclick="LoadDashboard">
+            🔄 Reintentar
+        </button>
+    </div>
+}
+else if (dashboard != null)
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Usuarios</h5>
+                    <h2 class="text-primary">@dashboard.TotalUsuarios</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Agentes</h5>
+                    <h2 class="text-success">@dashboard.TotalAgentes</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Clientes</h5>
+                    <h2 class="text-info">@dashboard.TotalClientes</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Inmuebles</h5>
+                    <h2 class="text-warning">@dashboard.TotalInmuebles</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Últimas Visitas</h5>
+                </div>
+                <div class="card-body">
+                    @if (dashboard.UltimasVisitas?.Any() == true)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Inmueble</th>
+                                        <th>Agente</th>
+                                        <th>Cliente</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var visita in dashboard.UltimasVisitas.Take(5))
+                                    {
+                                        <tr>
+                                            <td>@visita.FechaHora.ToString("dd/MM HH:mm")</td>
+                                            <td>@(visita.InmuebleDireccion.Length > 30 ? visita.InmuebleDireccion.Substring(0, 30) + "..." : visita.InmuebleDireccion)</td>
+                                            <td>@visita.AgenteNombre</td>
+                                            <td>@visita.ClienteTelefono</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay visitas recientes</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Inmuebles por Zona</h5>
+                </div>
+                <div class="card-body">
+                    @if (dashboard.InmueblesPorZona?.Any() == true)
+                    {
+                        @foreach (var zona in dashboard.InmueblesPorZona.Take(5))
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>@zona.Key</span>
+                                <span class="badge bg-primary">@zona.Value</span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No hay datos de zonas</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private DashboardDto? dashboard;
+    private string? errorMessage;
+    private string? debugInfo;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboard();
+    }
+
+    private async Task LoadDashboard()
+    {
+        try
+        {
+            isLoading = true;
+            errorMessage = null;
+            debugInfo = null;
+
+            // Debug info
+            debugInfo = $"Base Address: {Http.BaseAddress}\n";
+            debugInfo += $"Attempting to call: {Http.BaseAddress}api/Dashboard\n";
+            debugInfo += $"Time: {DateTime.Now}\n";
+
+            var response = await Http.GetAsync("api/Dashboard");
+
+            debugInfo += $"Status Code: {response.StatusCode}\n";
+            debugInfo += $"Content Type: {response.Content.Headers.ContentType}\n";
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                debugInfo += $"Response Length: {json.Length} characters\n";
+
+                if (json.StartsWith("<"))
+                {
+                    errorMessage = "La API está devolviendo HTML en lugar de JSON. Verifica la configuración del servidor.";
+                    debugInfo += $"Response Preview: {json.Substring(0, Math.Min(200, json.Length))}\n";
+                    return;
+                }
+
+                dashboard = JsonSerializer.Deserialize<DashboardDto>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                debugInfo += "✅ Dashboard cargado correctamente\n";
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Error HTTP {response.StatusCode}: {response.ReasonPhrase}";
+                debugInfo += $"Error Content: {content}\n";
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            errorMessage = $"Error de red: {httpEx.Message}";
+            debugInfo += $"HTTP Exception: {httpEx}\n";
+        }
+        catch (JsonException jsonEx)
+        {
+            errorMessage = $"Error de JSON: {jsonEx.Message}";
+            debugInfo += $"JSON Exception: {jsonEx}\n";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error inesperado: {ex.Message}";
+            debugInfo += $"General Exception: {ex}\n";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}
