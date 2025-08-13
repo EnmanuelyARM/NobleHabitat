@@ -1,9 +1,10 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Components.Authorization;
-using Blazored.LocalStorage;
 using NobleHabitat.WebUI;
 using NobleHabitat.WebUI.Auth;
+using NobleHabitat.WebUI.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +21,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 // Add Authentication services
 builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<InmuebleServiceClient>();
 
 // Register JwtAuthenticationStateProvider as scoped (not singleton)
 builder.Services.AddScoped<JwtAuthenticationStateProvider>();

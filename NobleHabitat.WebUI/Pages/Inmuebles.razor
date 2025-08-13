@@ -1,0 +1,144 @@
+﻿@page "/inmuebles"
+@using NobleHabitat.Shared.DTOs
+@using NobleHabitat.WebUI.Services
+@inject InmuebleServiceClient InmuebleService
+
+<h2 class="page-title">🏡 Lista de Inmuebles</h2>
+
+@if (inmuebles is null || inmuebles.Count == 0)
+{
+    <p class="text-muted">No hay inmuebles disponibles.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-modern">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Superficie (m²)</th>
+                    <th>Dirección</th>
+                    <th>Posee Llaves</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var inmueble in inmuebles)
+                {
+                    <tr>
+                        <td class="tipo">@inmueble.Tipo</td>
+                        <td class="superficie">@inmueble.Superficie</td>
+                        <td class="direccion">@inmueble.Direccion</td>
+                        <td class="llaves">@((inmueble.PoseeLlaves ? "Sí" : "No"))</td>
+                        <td>
+                            <button class="btn btn-edit" @onclick="() => EditarInmueble(inmueble.Id)">✏️ Editar</button>
+                            <button class="btn btn-delete" @onclick="() => EliminarInmueble(inmueble.Id)">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<style>
+    .page-title {
+        color: #4a00e0;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px #ccc;
+    }
+
+    .table-modern {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        .table-modern th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .table-modern td {
+            background: #f7f7f7;
+            padding: 12px;
+            color: #333;
+            border-bottom: 10px solid transparent;
+        }
+
+        .table-modern tr:hover td {
+            background: #e0e7ff;
+            transition: 0.3s;
+        }
+
+    .tipo {
+        font-weight: bold;
+        color: #6b21a8;
+    }
+
+    .superficie {
+        color: #2563eb;
+    }
+
+    .direccion {
+        color: #059669;
+    }
+
+    .llaves {
+        font-weight: 600;
+        color: #d97706;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 12px;
+        padding: 6px 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 5px;
+    }
+
+    .btn-edit {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+        .btn-edit:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+    .btn-delete {
+        background-color: #ef4444;
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background-color: #b91c1c;
+            transform: translateY(-2px);
+        }
+</style>
+
+@code {
+    private List<InmuebleDto> inmuebles = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        inmuebles = await InmuebleService.GetInmueblesAsync();
+    }
+
+    private void EditarInmueble(Guid id)
+    {
+        // Navegar o mostrar modal para editar
+    }
+
+    private void EliminarInmueble(Guid id)
+    {
+        // Llamar API para eliminar
+    }
+}

@@ -12,5 +12,10 @@ namespace NobleHabitat.Shared.DTOs
         public Guid OficinaId { get; set; }
         public Guid PropietarioId { get; set; }
         public Guid? ZonaId { get; set; }
+        public string Titulo { get; set; } = default!;
+        public string ImagenUrl { get; set; } = default!;
+        public string Descripcion { get; set; } = default!;
+        public decimal Precio { get; set; }
+        public string Ubicacion { get; set; } = default!;
     }
 }
