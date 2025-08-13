@@ -1,12 +1,58 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized Context="authContext">
+                    @if (!authContext.User.Identity.IsAuthenticated)
+                    {
+                        <RedirectToAuth />
+                    }
+                    else
+                    {
+                        <LayoutView Layout="@typeof(MainLayout)">
+                            <div class="container mt-4">
+                                <div class="alert alert-warning">
+                                    <h4>Acceso Denegado</h4>
+                                    <p>No tienes permiso para ver esta página.</p>
+                                </div>
+                            </div>
+                        </LayoutView>
+                    }
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="container mt-4">
+                    <div class="alert alert-info">
+                        <h4>Página no encontrada</h4>
+                        <p>La página que buscas no existe.</p>
+                        <a href="/dashboard" class="btn btn-primary">Ir al Dashboard</a>
+                    </div>
+                </div>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+
+        // If no token or not authenticated, ensure the app starts on /auth
+        if (string.IsNullOrEmpty(token) || !authState.User.Identity?.IsAuthenticated == true)
+        {
+            if (!Navigation.Uri.Contains("/auth") && !Navigation.Uri.Contains("/login"))
+            {
+                Navigation.NavigateTo("/auth");
+            }
+        }
+    }
+}

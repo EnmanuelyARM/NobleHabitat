@@ -1,9 +1,11 @@
 ﻿using NobleHabitat.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using NobleHabitat.Domain.Models;
 
 namespace NobleHabitat.Infraestructure.Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext<ApplicationUser>
     {
     public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
