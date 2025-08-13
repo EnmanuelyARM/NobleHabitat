@@ -1,0 +1,37 @@
+﻿.nav-scrollable {
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 767.98px) {
+    .nav-scrollable {
+        display: none;
+    }
+
+        .nav-scrollable.collapse:not(.show) {
+            display: none !important;
+        }
+
+        .nav-scrollable.collapse.show {
+            display: block !important;
+        }
+}
+
+@media (min-width: 768px) {
+    .nav-scrollable {
+        display: block !important;
+        height: auto !important;
+        overflow-y: visible;
+    }
+
+    .navbar-toggler {
+        display: none; /* Hide toggle button on desktop */
+    }
+
+    .nav-item {
+        padding: 0.5rem 1rem;
+    }
+
+    .nav-link {
+        padding: 0.5rem 1rem;
+    }
+}

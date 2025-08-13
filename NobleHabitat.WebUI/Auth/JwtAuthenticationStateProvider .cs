@@ -1,8 +1,7 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Blazored.LocalStorage;
 using System.Security.Claims;
-using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace NobleHabitat.WebUI.Auth
 {
@@ -10,6 +9,7 @@ namespace NobleHabitat.WebUI.Auth
     {
         private readonly ILocalStorageService _localStorage;
         private readonly HttpClient _httpClient;
+        private const string TokenKey = "authToken";
 
         public JwtAuthenticationStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
         {
@@ -19,46 +19,100 @@ namespace NobleHabitat.WebUI.Auth
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var savedToken = await _localStorage.GetItemAsync<string>("authToken");
-
-            if (string.IsNullOrWhiteSpace(savedToken))
+            try
             {
-                _httpClient.DefaultRequestHeaders.Authorization = null;
+                var token = await _localStorage.GetItemAsync<string>(TokenKey);
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                }
+
+                var claims = ParseClaimsFromJwt(token);
+                var identity = new ClaimsIdentity(claims, "jwt");
+                var user = new ClaimsPrincipal(identity);
+
+                return new AuthenticationState(user);
+            }
+            catch
+            {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", savedToken);
-
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(savedToken);
-
-            var identity = new ClaimsIdentity(jwt.Claims, "jwt");
-            var user = new ClaimsPrincipal(identity);
-
-            return new AuthenticationState(user);
         }
 
-        public void NotifyUserAuthentication(string token)
+        public async Task LoginAsync(string token)
         {
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
+            await _localStorage.SetItemAsync(TokenKey, token);
 
-            var identity = new ClaimsIdentity(jwt.Claims, "jwt");
+            var claims = ParseClaimsFromJwt(token);
+            var identity = new ClaimsIdentity(claims, "jwt");
             var user = new ClaimsPrincipal(identity);
-
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
 
-        public void NotifyUserLogout()
+        // Method for compatibility with your login component
+        public async Task NotifyUserAuthentication(string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            await LoginAsync(token);
+        }
 
-            var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymousUser)));
+        public async Task LogoutAsync()
+        {
+            await _localStorage.RemoveItemAsync(TokenKey);
+
+            var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(anonymous)));
+        }
+
+        private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        {
+            var claims = new List<Claim>();
+            var payload = jwt.Split('.')[1];
+
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+
+            if (keyValuePairs != null)
+            {
+                foreach (var kvp in keyValuePairs)
+                {
+                    if (kvp.Value is JsonElement element)
+                    {
+                        if (element.ValueKind == JsonValueKind.String)
+                        {
+                            claims.Add(new Claim(kvp.Key, element.GetString() ?? string.Empty));
+                        }
+                        else if (element.ValueKind == JsonValueKind.Array)
+                        {
+                            foreach (var item in element.EnumerateArray())
+                            {
+                                claims.Add(new Claim(kvp.Key, item.GetString() ?? string.Empty));
+                            }
+                        }
+                        else
+                        {
+                            claims.Add(new Claim(kvp.Key, element.ToString()));
+                        }
+                    }
+                    else
+                    {
+                        claims.Add(new Claim(kvp.Key, kvp.Value.ToString() ?? string.Empty));
+                    }
+                }
+            }
+
+            return claims;
+        }
+
+        private byte[] ParseBase64WithoutPadding(string base64)
+        {
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+            return Convert.FromBase64String(base64);
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            // Usuario autenticado, redirigir al dashboard
+            Navigation.NavigateTo("/dashboard", replace: true);
+        }
+        else
+        {
+            // Usuario no autenticado, redirigir al login
+            Navigation.NavigateTo("/auth", replace: true);
+        }
+    }
+}

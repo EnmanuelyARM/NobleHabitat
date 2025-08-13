@@ -1,0 +1,700 @@
+﻿@page "/auth"
+@page "/login"
+@page "/register"
+@layout AuthLayout
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Authorization
+@using NobleHabitat.WebUI.Auth
+@using System.Net.Http.Json
+@using NobleHabitat.WebUI.Shared
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo">
+                <i class="bi bi-house-heart-fill"></i>
+                <h2>NobleHabitat</h2>
+            </div>
+            <p class="subtitle">Tu plataforma inmobiliaria de confianza</p>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="tab-btn @(isLoginMode ? "active" : "")" @onclick="() => SwitchMode(true)">
+                Iniciar Sesión
+            </button>
+            <button class="tab-btn @(!isLoginMode ? "active" : "")" @onclick="() => SwitchMode(false)">
+                Registrarse
+            </button>
+        </div>
+
+        @if (isLoginMode)
+        {
+            <!-- LOGIN FORM -->
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin" class="auth-form">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-envelope"></i>
+                        Email
+                    </label>
+                    <InputText class="form-input" @bind-Value="loginModel.Email"
+                               placeholder="tu@email.com" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => loginModel.Email)" class="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-lock"></i>
+                        Contraseña
+                    </label>
+                    <InputText class="form-input" @bind-Value="loginModel.Password"
+                               type="password" placeholder="••••••••" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => loginModel.Password)" class="error-message" />
+                </div>
+
+                <button class="btn-primary-auth" type="submit" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <span class="spinner"></span>
+                        <span>Iniciando sesión...</span>
+                    }
+                    else
+                    {
+                        <span>Iniciar Sesión</span>
+                    }
+                </button>
+            </EditForm>
+        }
+        else
+        {
+            <!-- REGISTER FORM -->
+            <EditForm Model="@registerModel" OnValidSubmit="HandleRegister" class="auth-form">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-person"></i>
+                        Nombre completo
+                    </label>
+                    <InputText class="form-input" @bind-Value="registerModel.FullName"
+                               placeholder="Tu nombre completo" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => registerModel.FullName)" class="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-envelope"></i>
+                        Email
+                    </label>
+                    <InputText class="form-input" @bind-Value="registerModel.Email"
+                               placeholder="tu@email.com" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => registerModel.Email)" class="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-lock"></i>
+                        Contraseña
+                    </label>
+                    <InputText class="form-input" @bind-Value="registerModel.Password"
+                               type="password" placeholder="••••••••" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => registerModel.Password)" class="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="bi bi-lock-fill"></i>
+                        Confirmar contraseña
+                    </label>
+                    <InputText class="form-input" @bind-Value="registerModel.ConfirmPassword"
+                               type="password" placeholder="••••••••" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => registerModel.ConfirmPassword)" class="error-message" />
+                </div>
+
+                <button class="btn-primary-auth" type="submit" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <span class="spinner"></span>
+                        <span>Registrando...</span>
+                    }
+                    else
+                    {
+                        <span>Crear Cuenta</span>
+                    }
+                </button>
+            </EditForm>
+        }
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert-error">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                @error
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            <div class="alert-success">
+                <i class="bi bi-check-circle-fill"></i>
+                @successMessage
+            </div>
+        }
+
+        <div class="divider">
+            <span>O continúa con</span>
+        </div>
+
+        @* <div class="social-buttons">
+            <button class="social-btn google" @onclick="() => HandleSocialLogin('google')" disabled="@isLoading">
+                <i class="bi bi-google"></i>
+                Google
+            </button>
+            <button class="social-btn facebook" @onclick="() => HandleSocialLogin('facebook')" disabled="@isLoading">
+                <i class="bi bi-facebook"></i>
+                Facebook
+            </button>
+            <button class="social-btn microsoft" @onclick="() => HandleSocialLogin('microsoft')" disabled="@isLoading">
+                <i class="bi bi-microsoft"></i>
+                Microsoft
+            </button>
+        </div> *@
+
+        <div class="auth-footer">
+            @if (isLoginMode)
+            {
+                <p>
+                    ¿Aún no tienes cuenta?
+                    <button class="link-btn" @onclick="() => SwitchMode(false)">
+                        Regístrate aquí
+                    </button>
+                </p>
+            }
+            else
+            {
+                <p>
+                    ¿Ya tienes una cuenta?
+                    <button class="link-btn" @onclick="() => SwitchMode(true)">
+                        Inicia sesión
+                    </button>
+                </p>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        width: 100%;
+        max-width: 420px;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: #667eea;
+        }
+
+        .logo h2 {
+            margin: 0;
+            color: #333;
+            font-weight: 700;
+        }
+
+    .subtitle {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .auth-tabs {
+        display: flex;
+        border-radius: 12px;
+        background: #f8f9fa;
+        padding: 4px;
+        margin-bottom: 30px;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .auth-form {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+    .btn-primary-auth {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+        .btn-primary-auth:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary-auth:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    .spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid transparent;
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    .alert-error {
+        background: #fee;
+        color: #c53030;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border-left: 4px solid #e53e3e;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .alert-success {
+        background: #f0fff4;
+        color: #38a169;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border-left: 4px solid #48bb78;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .error-message {
+        color: #e53e3e;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .divider {
+        position: relative;
+        text-align: center;
+        margin: 25px 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+    .social-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .social-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .social-btn.google {
+            color: #db4437;
+            border-color: #db4437;
+        }
+
+            .social-btn.google:hover:not(:disabled) {
+                background: #db4437;
+                color: white;
+            }
+
+        .social-btn.facebook {
+            color: #4267b2;
+            border-color: #4267b2;
+        }
+
+            .social-btn.facebook:hover:not(:disabled) {
+                background: #4267b2;
+                color: white;
+            }
+
+        .social-btn.microsoft {
+            color: #0078d4;
+            border-color: #0078d4;
+        }
+
+            .social-btn.microsoft:hover:not(:disabled) {
+                background: #0078d4;
+                color: white;
+            }
+
+    .auth-footer {
+        text-align: center;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .link-btn {
+        background: none;
+        border: none;
+        color: #667eea;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0;
+    }
+
+        .link-btn:hover {
+            color: #764ba2;
+        }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .auth-card {
+            padding: 30px 20px;
+            margin: 10px;
+        }
+
+        .social-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+
+@code {
+    private bool isLoginMode = true;
+    private bool isLoading = false;
+    private string error = string.Empty;
+    private string successMessage = string.Empty;
+
+    private LoginModel loginModel = new();
+    private RegisterModel registerModel = new();
+
+    protected override void OnInitialized()
+    {
+        // Determinar modo inicial basado en la URL
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        isLoginMode = uri.AbsolutePath.Contains("login") || uri.AbsolutePath == "/auth" || uri.AbsolutePath == "/";
+    }
+
+    private void SwitchMode(bool loginMode)
+    {
+        isLoginMode = loginMode;
+        error = string.Empty;
+        successMessage = string.Empty;
+
+        // Actualizar URL sin recargar la página
+        var newUrl = loginMode ? "/login" : "/register";
+        Navigation.NavigateTo(newUrl, replace: true);
+    }
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            isLoading = true;
+            error = string.Empty;
+
+            var response = await Http.PostAsJsonAsync("api/auth/login", new
+            {
+                Email = loginModel.Email,
+                Password = loginModel.Password
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<LoginResult>();
+
+                if (result?.Token != null)
+                {
+                    await LocalStorage.SetItemAsync("authToken", result.Token);
+                    await ((JwtAuthenticationStateProvider)AuthStateProvider).NotifyUserAuthentication(result.Token);
+
+                    Navigation.NavigateTo("/dashboard", forceLoad: true);
+                }
+                else
+                {
+                    error = "Error al procesar la respuesta del servidor.";
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                error = response.StatusCode switch
+                {
+                    System.Net.HttpStatusCode.Unauthorized => "Email o contraseña incorrectos.",
+                    System.Net.HttpStatusCode.BadRequest => "Datos de login inválidos.",
+                    _ => "Error de conexión. Intenta más tarde."
+                };
+            }
+        }
+        catch (HttpRequestException)
+        {
+            error = "No se pudo conectar al servidor. Verifica tu conexión.";
+        }
+        catch (Exception ex)
+        {
+            error = "Ocurrió un error inesperado. Intenta de nuevo.";
+            Console.WriteLine($"Login Error: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            isLoading = true;
+            error = string.Empty;
+            successMessage = string.Empty;
+
+            var response = await Http.PostAsJsonAsync("api/auth/register", new
+            {
+                Email = registerModel.Email,
+                Password = registerModel.Password,
+                FullName = registerModel.FullName
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                successMessage = "¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.";
+                registerModel = new RegisterModel();
+
+                // Cambiar automáticamente al modo login después de 2 segundos
+                await Task.Delay(2000);
+                SwitchMode(true);
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                error = response.StatusCode switch
+                {
+                    System.Net.HttpStatusCode.BadRequest => "Datos de registro inválidos o el usuario ya existe.",
+                    _ => "Error al registrar usuario. Intenta más tarde."
+                };
+            }
+        }
+        catch (HttpRequestException)
+        {
+            error = "No se pudo conectar al servidor. Verifica tu conexión.";
+        }
+        catch (Exception ex)
+        {
+            error = "Ocurrió un error inesperado. Intenta de nuevo.";
+            Console.WriteLine($"Register Error: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleSocialLogin(string provider)
+    {
+        // Por ahora, mostrar mensaje de funcionalidad pendiente
+        error = $"Inicio de sesión con {provider} estará disponible pronto.";
+
+        // TODO: Implementar OAuth con el proveedor seleccionado
+        await Task.Delay(100); // Placeholder para future implementation
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "El email es requerido")]
+        [EmailAddress(ErrorMessage = "Formato de email inválido")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida")]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "El nombre es requerido")]
+        [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
+        public string FullName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El email es requerido")]
+        [EmailAddress(ErrorMessage = "Formato de email inválido")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener entre 6 y 100 caracteres")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
+            ErrorMessage = "La contraseña debe contener al menos una mayúscula, una minúscula y un número")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Confirma tu contraseña")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+    }
+
+    public class LoginResult
+    {
+        public string Token { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
+        public DateTime ExpiresAt { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+    }
+}
