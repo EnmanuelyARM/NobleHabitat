@@ -6,22 +6,22 @@ namespace NobleHabitat.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CaracteristicaInmuebleController : ControllerBase
-    {        
-        private readonly ICaracteristicaInmuebleService _caracteristicaInmuebleService;
-        public CaracteristicaInmuebleController(ICaracteristicaInmuebleService caracteristicaInmuebleService)
+    public class AgenteController : ControllerBase
+    {
+        private readonly IAgenteService _agenteService;
+        public AgenteController(IAgenteService agenteService)
         {
-            _caracteristicaInmuebleService = caracteristicaInmuebleService ?? throw new ArgumentNullException(nameof(caracteristicaInmuebleService));
+            _agenteService = agenteService ?? throw new ArgumentNullException(nameof(agenteService));
         }
 
-        // Metodo para traer todas las caracteristicas de inmueble
-        [HttpGet("caracteristica-inmueble")]
-        public async Task<ActionResult<IEnumerable<CaracteristicaInmuebleDto>>> GetCaracteristicasInmueble()
+        // Método para traer todos los agentes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AgenteDto>>> GetAgentes()
         {
             try
             {
-                var caracteristicas = await _caracteristicaInmuebleService.GetCaracteristicasAsync();
-                return Ok(caracteristicas);
+                var agentes = await _agenteService.GetAgentsAsync();
+                return Ok(agentes);
             }
             catch (Exception ex)
             {
@@ -29,20 +29,20 @@ namespace NobleHabitat.API.Controllers
             }
         }
 
-        // Metodo para traer una caracteristica de inmueble por ID
-        [HttpGet("caracteristica-inmueble/{id}")]
-        public async Task<ActionResult<CaracteristicaInmuebleDto>> GetCaracteristicaInmueble(int id)
+        // Método para traer un agente por ID de usuario
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<ActionResult<AgenteDto>> GetAgenteByUsuarioId(Guid usuarioId)
         {
             try
             {
-                var caracteristica = await _caracteristicaInmuebleService.GetCaracteristicaByIdAsync(id);
-                if (caracteristica != null)
+                var agente = await _agenteService.GetAgentByIdAsync(usuarioId);
+                if (agente != null)
                 {
-                    return Ok(caracteristica);
+                    return Ok(agente);                    
                 }
                 else
                 {
-                    return NotFound($"Caracteristica with ID {id} not found.");
+                    return NotFound($"Agent with Usuario ID {usuarioId} not found.");
                 }
             }
             catch (Exception ex)
@@ -51,69 +51,105 @@ namespace NobleHabitat.API.Controllers
             }
         }
 
-        // Metodo para crear una caracteristica de inmueble
-        [HttpPost("caracteristica-inmueble")]
-        public async Task<ActionResult<CaracteristicaInmuebleDto>> CreateCaracteristicaInmueble([FromBody] CaracteristicaInmuebleDto caracteristicaDto)
+        // Método para traer un agente por ID
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AgenteDto>> GetAgente(Guid id)
         {
             try
             {
-                if (caracteristicaDto == null)
+                var agente = await _agenteService.GetAgentByIdAsync(id);
+                if (agente != null)
                 {
-                    return BadRequest("Caracteristica cannot be null.");
+                    return Ok(agente);                    
                 }
-                var createdCaracteristica = await _caracteristicaInmuebleService.CreateCaracteristicaAsync(caracteristicaDto);
-                return CreatedAtAction(nameof(GetCaracteristicaInmueble), new { id = createdCaracteristica.Id }, createdCaracteristica);
+                else
+                {
+                    return NotFound($"Agent with ID {id} not found.");
+                }
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        // Metodo para actualizar una caracteristica de inmueble
-        [HttpPut("caracteristica-inmueble/{Id}")]
-        public async Task<ActionResult<CaracteristicaInmuebleDto>> UpdateCaracteristicaInmueble(Guid Id, [FromBody] CaracteristicaInmuebleDto caracteristicaDto)
+
+        // Método para crear un agente
+        [HttpPost]
+        public async Task<ActionResult<AgenteDto>> CreateAgente([FromBody] AgenteDto agenteDto)
+        {            
+            try
+            {
+                if (agenteDto != null)
+                {
+                    var createdAgent = await _agenteService.CreateAgentAsync(agenteDto);
+                    return CreatedAtAction(nameof(GetAgente), new { id = createdAgent.Id }, createdAgent);                    
+                }
+                else
+                {
+                    return BadRequest("Agent data is null.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // Método para actualizar un agente
+        [HttpPut("{id}")]
+        public async Task<ActionResult<AgenteDto>> UpdateAgente(Guid id, [FromBody] AgenteDto agenteDto)
         {
             try
             {
-                if (caracteristicaDto == null)
+                if (agenteDto == null)
                 {
-                    return BadRequest("Caracteristica cannot be null.");
+                    return BadRequest("Agent data is null.");
                 }
 
-                if (Id != caracteristicaDto.Id)
+                if (id != agenteDto.Id)
                 {
                     return BadRequest("ID in URL does not match ID in body.");
                 }
 
-                var updatedCaracteristica = await _caracteristicaInmuebleService.UpdateCaracteristicaAsync(caracteristicaDto);
-                if (updatedCaracteristica != null)
+                var updatedAgent = await _agenteService.UpdateAgentAsync(agenteDto);
+                if (updatedAgent != null)
                 {
-                    return Ok(updatedCaracteristica);
+                    return Ok(updatedAgent);
                 }
                 else
                 {
-                    return NotFound($"Caracteristica with ID {Id} not found.");
+                    return NotFound($"Agent with ID {id} not found.");
                 }
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
         }
 
-        // Metodo para eliminar una caracteristica de inmueble
-        [HttpDelete("caracteristica-inmueble/{id}")]
-        public async Task<IActionResult> DeleteCaracteristicaInmueble(int id)
+        // Método para eliminar un agente
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAgente(Guid id)
         {
             try
             {
-                await _caracteristicaInmuebleService.DeleteCaracteristicaAsync(id);
+                await _agenteService.DeleteAgentAsync(id);
                 return NoContent(); // 204 No Content
             }
-            catch (KeyNotFoundException)
+            catch (Exception ex)
             {
-                return NotFound($"Caracteristica with ID {id} not found.");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // Método adicional para eliminar por Usuario ID si es necesario
+        [HttpDelete("usuario/{usuarioId}")]
+        public async Task<IActionResult> DeleteAgenteByUsuarioId(Guid usuarioId)
+        {
+            try
+            {
+                await _agenteService.DeleteAgentAsync(usuarioId);
+                return NoContent(); // 204 No Content
             }
             catch (Exception ex)
             {
