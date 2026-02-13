@@ -1,18 +1,18 @@
 ﻿using NobleHabitat.Domain.Interfaces;
-using NobleHabitat.Infraestructure.Repositories;
-using NobleHabitat.Infraestructure.Data;
+using NobleHabitat.Infrastructure.Repositories;
+using NobleHabitat.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace NobleHabitat.Infraestructure.DependencyInjection
+namespace NobleHabitat.Infrastructure.DependencyInjection
 {
     public static class ServiceContainer
     {
-        public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Register DbContext with SQL Server
-            services.AddDbContext<AppDBContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors(options =>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NobleHabitat.Infraestructure.Data;
+using NobleHabitat.Infrastructure.Data;
 using NobleHabitat.Shared.DTOs;
 
 namespace NobleHabitat.API.Controllers
@@ -9,9 +9,9 @@ namespace NobleHabitat.API.Controllers
     [Route("api/[controller]")]
     public class DashboardController : ControllerBase
     {
-        private readonly AppDBContext _db;
+        private readonly AppDbContext _db;
 
-        public DashboardController(AppDBContext db) => _db = db;
+        public DashboardController(AppDbContext db) => _db = db;
 
         [HttpGet]
         public async Task<ActionResult<DashboardDto>> Get()
@@ -20,19 +20,19 @@ namespace NobleHabitat.API.Controllers
             {
                 var dto = new DashboardDto
                 {
-                    TotalUsuarios = await _db.usuarios.CountAsync(),
-                    TotalAgentes = await _db.agentes.CountAsync(),
-                    TotalClientes = await _db.clientes.CountAsync(),
-                    TotalPropietarios = await _db.propietarios.CountAsync(),
-                    TotalInmuebles = await _db.inmuebles.CountAsync(),
-                    TotalOficinas = await _db.oficinas.CountAsync(),
-                    TotalVisitas = await _db.visitas.CountAsync(),
-                    OfertasEnVenta = await _db.ofertas.CountAsync(o => o.EnVenta),
-                    OfertasEnAlquiler = await _db.ofertas.CountAsync(o => o.EnAlquiler)
+                    TotalUsuarios = await _db.Usuarios.CountAsync(),
+                    TotalAgentes = await _db.Agentes.CountAsync(),
+                    TotalClientes = await _db.Clientes.CountAsync(),
+                    TotalPropietarios = await _db.Propietarios.CountAsync(),
+                    TotalInmuebles = await _db.Inmuebles.CountAsync(),
+                    TotalOficinas = await _db.Oficinas.CountAsync(),
+                    TotalVisitas = await _db.Visitas.CountAsync(),
+                    OfertasEnVenta = await _db.Ofertas.CountAsync(o => o.EnVenta),
+                    OfertasEnAlquiler = await _db.Ofertas.CountAsync(o => o.EnAlquiler)
                 };
 
                 // Inmuebles por zona (nombre, count)
-                var inmueblesPorZona = await _db.inmuebles
+                var inmueblesPorZona = await _db.Inmuebles
                     .Include(i => i.Zona)
                     .Where(i => i.ZonaId != null)
                     .GroupBy(i => i.Zona!.Nombre)
@@ -45,7 +45,7 @@ namespace NobleHabitat.API.Controllers
                     .ToList();
 
                 // Últimas 10 visitas - CORREGIDO: Convertir Guid a string
-                var ultimas = await _db.visitas
+                var ultimas = await _db.Visitas
                     .Include(v => v.Inmueble)
                     .Include(v => v.Agente).ThenInclude(a => a.Usuario)
                     .Include(v => v.Cliente).ThenInclude(c => c.Usuario)
@@ -64,7 +64,7 @@ namespace NobleHabitat.API.Controllers
 
                 // Visitas últimos 7 días
                 var desde = DateTime.UtcNow.Date.AddDays(-6);
-                var visitas7 = await _db.visitas
+                var visitas7 = await _db.Visitas
                     .Where(v => v.FechaHora >= desde)
                     .GroupBy(v => v.FechaHora.Date)
                     .Select(g => new { Day = g.Key, Count = g.Count() })

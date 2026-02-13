@@ -1,18 +1,18 @@
-﻿using NobleHabitat.Infraestructure.Data;
+﻿using NobleHabitat.Infrastructure.Data;
 using NobleHabitat.Domain.Entities;
 using NobleHabitat.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace NobleHabitat.Infraestructure.Repositories
+namespace NobleHabitat.Infrastructure.Repositories
 {
     public class VisitaRepository: Repository<Visita>, IVisitaRepository
     {
-        public VisitaRepository(AppDBContext dbContext) : base(dbContext)
+        public VisitaRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
-        public async Task<Visita> GetByIdAsync(Guid id)
+        public override async Task<Visita> GetByIdAsync(Guid id)
         {
-            return await _dbContext.visitas
+            return await _dbContext.Visitas
                 .Include(v => v.Propietario)
                 .Include(v => v.Oficina)
                 .FirstOrDefaultAsync(v => v.Id == id) 
@@ -20,7 +20,7 @@ namespace NobleHabitat.Infraestructure.Repositories
         }
         public async Task<IEnumerable<Visita>> GetAllWithPropietarioAndOficinaAsync()
         {
-            return await _dbContext.visitas
+            return await _dbContext.Visitas
                 .Include(v => v.Propietario)
                 .Include(v => v.Oficina)
                 .ToListAsync();

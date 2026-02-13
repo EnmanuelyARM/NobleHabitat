@@ -1,12 +1,12 @@
 ﻿//using NobleHabitat.Application.Interfaces;
 using NobleHabitat.Domain.Interfaces;
-using NobleHabitat.Infraestructure.Data;
+using NobleHabitat.Infrastructure.Data;
 
-namespace NobleHabitat.Infraestructure.Repositories
+namespace NobleHabitat.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppDBContext _dbContext;
+        private readonly AppDbContext _dbContext;
 
         public IAgenteRepository Agentes { get; }
         public ICaracteristicaInmuebleRepository CaracteristicaInmuebles { get; }
@@ -20,7 +20,7 @@ namespace NobleHabitat.Infraestructure.Repositories
         public IVisitaRepository Visitas { get; }
         public IZonaRepository Zonas { get; }
 
-        public UnitOfWork(AppDBContext dbContext)
+        public UnitOfWork(AppDbContext dbContext)
         {
             _dbContext = dbContext;
 

@@ -6,6 +6,7 @@ namespace NobleHabitat.Domain.Interfaces
     {
         Task<IEnumerable<Inmueble>> GetByZonaAsync(Guid zonaId);
         Task<IEnumerable<Inmueble>> GetByTipoAsync(string tipo);
+        Task<IEnumerable<Inmueble>> GetAllWithCaracteristicasAsync();
        
     }
 

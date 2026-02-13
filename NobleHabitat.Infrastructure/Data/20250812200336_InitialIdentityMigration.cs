@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NobleHabitat.Infraestructure.Data
+namespace NobleHabitat.Infrastructure.Data
 {
     /// <inheritdoc />
     public partial class InitialIdentityMigration : Migration

@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace NobleHabitat.Infraestructure.Data
+namespace NobleHabitat.Infrastructure.Data
 {
-    public class AppDBContextFactory: IDesignTimeDbContextFactory<AppDBContext>
+    public class AppDbContextFactory: IDesignTimeDbContextFactory<AppDbContext>
     {
-        public AppDBContext CreateDbContext(string[] args)
+        public AppDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDBContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=NobleHabitatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
 );
-            return new AppDBContext(optionsBuilder.Options);
+            return new AppDbContext(optionsBuilder.Options);
         }
     }
 }

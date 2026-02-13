@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NobleHabitat.Infraestructure.Data;
+using NobleHabitat.Infrastructure.Data;
 
 #nullable disable
 
-namespace NobleHabitat.Infraestructure.Data
+namespace NobleHabitat.Infrastructure.Data
 {
-    [DbContext(typeof(AppDBContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20250811015230_Primera")]
     partial class Primera
     {

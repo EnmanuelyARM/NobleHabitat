@@ -3,27 +3,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using NobleHabitat.Domain.Models;
 
-namespace NobleHabitat.Infraestructure.Data
+namespace NobleHabitat.Infrastructure.Data
 {
-    public class AppDBContext : IdentityDbContext<ApplicationUser>
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-    public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             
         }
         // Define DbSets for your entities
         // public DbSet<YourEntity> YourEntities { get; set; }
-        public DbSet<Agente> agentes { get; set; }
-        public DbSet<Cliente> clientes { get; set; }
-        public DbSet<Propietario> propietarios { get; set; }
-        public DbSet<Usuario> usuarios { get; set; }
-        public DbSet<Inmueble> inmuebles { get; set; }
-        public DbSet<Oficina> oficinas { get; set; }
-        public DbSet<Zona> zonas { get; set; }
-        public DbSet<CaracteristicaInmueble> caracteristicaInmuebles { get; set; }
-        public DbSet<Estancia> estancias { get; set; }
-        public DbSet<Visita> visitas { get; set; }
-        public DbSet<Oferta> ofertas { get; set; }
+        public DbSet<Agente> Agentes { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Propietario> Propietarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Inmueble> Inmuebles { get; set; }
+        public DbSet<Oficina> Oficinas { get; set; }
+        public DbSet<Zona> Zonas { get; set; }
+        public DbSet<CaracteristicaInmueble> CaracteristicaInmuebles { get; set; }
+        public DbSet<Estancia> Estancias { get; set; }
+        public DbSet<Visita> Visitas { get; set; }
+        public DbSet<Oferta> Ofertas { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

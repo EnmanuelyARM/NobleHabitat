@@ -1,12 +1,13 @@
-﻿using NobleHabitat.Infraestructure.Data;
+﻿using NobleHabitat.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using NobleHabitat.Domain.Interfaces;
 
-namespace NobleHabitat.Infraestructure.Repositories
+namespace NobleHabitat.Infrastructure.Repositories
 {
-    public class Repository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly AppDBContext _dbContext;
-        public Repository (AppDBContext dbContext)
+        protected readonly AppDbContext _dbContext;
+        public Repository (AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -15,7 +16,7 @@ namespace NobleHabitat.Infraestructure.Repositories
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
